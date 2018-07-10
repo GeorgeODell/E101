@@ -3,10 +3,6 @@ package example
 import scala.math.pow
 import scala.collection.mutable.ArrayBuffer
 
-/**
-  * Created by louisdmannevy on 09/07/18.
-  */
-
 object Main extends App {
 
   var OptimalPolynomials = ArrayBuffer[Long]()
