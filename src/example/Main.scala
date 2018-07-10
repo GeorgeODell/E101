@@ -33,7 +33,7 @@ object Main extends App {
 
   numberList.zipWithIndex.foreach{case(e, i) => println(s"${i+1}: ${TruePolynomial(e)}")}
 
-  println(FindOptimalSequence(Array(1, 8, 27)))
+  println(FindOptimalSequence(Array(1, 8, 27, 64)))
 
 
 }
