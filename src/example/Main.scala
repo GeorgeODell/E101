@@ -5,35 +5,41 @@ import scala.collection.mutable.ArrayBuffer
 
 object Main extends App {
 
-  var OptimalPolynomials = ArrayBuffer[Long]()
-  val numberList: List[Long] = List.range(1, 20)
+  val startTime = System.currentTimeMillis()
+  val numberList: List[Long] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+  val trueSequence = numberList.map(n => TruePolynomial(n))
+  var firstIncorrectTerms = ArrayBuffer[Long]()
 
   def TruePolynomial(n: Long): Long = {
-    val numberList: List[Long] = List.range(0, 11)
+    val numberList: List[Long] = List(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
     val sequence = numberList.map(x => if (x % 2 == 0) pow(n, x).toLong else -pow(n, x).toLong)
     sequence.sum
   }
 
-  def FindOptimalSequence(terms: Array[Int]): Int = {
+  def FindNextInSequence(terms: Array[Long]): Long = {
     if (terms.length == 1) {
       terms(0)
     } else {
-      val preprocessedTerms = terms.zipWithIndex.map{
+      val processedTerms = terms.zipWithIndex.map{
         case(value, index) =>
           if (index+1 != terms.length) {
             terms(index+1) - terms(index)
           } else {
-            0
+            ' '
           }
-      }
-      val processedTerms = preprocessedTerms.filter(_ != 0)
-      terms.last + FindOptimalSequence(processedTerms)
+      }.filter(_ != ' ')
+      terms.last + FindNextInSequence(processedTerms)
     }
   }
 
-  numberList.zipWithIndex.foreach{case(e, i) => println(s"${i+1}: ${TruePolynomial(e)}")}
+  for (i <- 1 to 10) {
+    firstIncorrectTerms += FindNextInSequence(trueSequence.filter(_ <= TruePolynomial(i)).toArray)
+    println(s"$i: ${trueSequence(i - 1)} ---> ${firstIncorrectTerms(i - 1)}")
+  }
 
-  println(FindOptimalSequence(Array(1, 8, 27, 64)))
+  println
+  println(s"The sum of FITs = ${firstIncorrectTerms.sum}")
 
-
+  val endTime = System.currentTimeMillis()
+  println(s"Time taken = ${endTime - startTime} ms")
 }
